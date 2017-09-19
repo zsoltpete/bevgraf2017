@@ -6,7 +6,8 @@
 std::vector<vec2> points = std::vector<vec2>();
 
 void init(void)
-{
+{	
+  points.push_back();
 	glClearColor(1.0, 1.0, 1.0, 0.0);	// Set display-window color to white.
 
 	glMatrixMode(GL_PROJECTION);		// Set projection parameters.
