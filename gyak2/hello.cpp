@@ -88,6 +88,24 @@ void spareIt(){
       glEnd();
       
     }
+    glColor3f(0.0, 0.8, 0.8);
+    for (int i = 0;i < 40; i += 1){
+      glBegin(GL_LINES);
+      	glVertex2i(i * 20 , 0);
+	glVertex2i(400, 400 - i*20);
+      
+      glEnd();
+      
+    }
+    
+    for (int i = 0;i < 40; i += 1){
+      glBegin(GL_LINES);
+      	glVertex2i(0, i * 20);
+	glVertex2i(400 - i*20, 400);
+      
+      glEnd();
+      
+    }
     
   
   glFlush(); 
