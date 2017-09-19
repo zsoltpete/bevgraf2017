@@ -76,17 +76,36 @@ void drawHouse(){
   
 }
 
+void spareIt(){
+   glClear(GL_COLOR_BUFFER_BIT);  // Clear display window.
+
+	glColor3f(0.0, 0.4, 0.2);
+  for (int i = 0;i< 800; i += 20){
+      glBegin(GL_LINES);
+      	glVertex2i(i, 0);
+	glVertex2i(0, i);
+      
+      glEnd();
+      
+    }
+    
+  
+  glFlush(); 
+  
+}
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);                         // Initialize GLUT.
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);   // Set display mode.
 	glutInitWindowPosition(50, 100);   // Set top-left display-window position.
-	glutInitWindowSize(400, 300);      // Set display-window width and height.
+	glutInitWindowSize(400, 400);      // Set display-window width and height.
 	glutCreateWindow("An Example OpenGL Program"); // Create display window.
 
 	init();                         // Execute initialization procedure.
 	//setupScene();
-	drawHouse();
+	//drawHouse();
+	spareIt();
 	glutDisplayFunc(drawWithVector);       // Send graphics to display window.
 	//glutDisplayFunc(drawWithoutVector);       // Send graphics to display window.
 	glutMainLoop();                    // Display everything and wait.
