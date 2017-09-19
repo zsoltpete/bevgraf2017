@@ -1,4 +1,5 @@
 #include <GL/glut.h>					// (or others, depending on the system in use)
+#include <GL/freeglut.h>
 #include "bevgrafmath2017.h"
 #include <vector>
 
@@ -43,6 +44,38 @@ void setupScene() {
 	drawWithVector();
 }
 
+void drawHouse(){
+  glClear(GL_COLOR_BUFFER_BIT);  // Clear display window.
+
+	glColor3f(0.0, 0.4, 0.2);      // Set line segment color to green.
+	glBegin(GL_POLYGON);
+	glVertex2i(0, 0);       // Specify line-segment geometry.
+	glVertex2i(0, 10);
+	glVertex2i(400, 10);
+	glVertex2i(400, 0);
+	glEnd();
+	
+	glColor3f(0.1, 0.1, 0.1); 
+	
+	glBegin(GL_POLYGON);
+	glVertex2i(50, 10);       // Specify line-segment geometry.
+	glVertex2i(50, 100);
+	glVertex2i(150, 100);
+	glVertex2i(150, 10);
+	glEnd();
+	
+	glColor3f(1.0, 0.0, 0.0); 
+	
+	glBegin(GL_POLYGON);
+	glVertex2i(50, 100);       // Specify line-segment geometry.
+	glVertex2i(100, 150);
+	glVertex2i(150, 100);
+	glEnd();
+
+	glFlush();  
+  
+}
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);                         // Initialize GLUT.
@@ -52,7 +85,8 @@ int main(int argc, char** argv)
 	glutCreateWindow("An Example OpenGL Program"); // Create display window.
 
 	init();                         // Execute initialization procedure.
-	setupScene();
+	//setupScene();
+	drawHouse();
 	glutDisplayFunc(drawWithVector);       // Send graphics to display window.
 	//glutDisplayFunc(drawWithoutVector);       // Send graphics to display window.
 	glutMainLoop();                    // Display everything and wait.
