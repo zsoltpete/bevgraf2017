@@ -38,6 +38,18 @@ void keyboard(unsigned char key, int x, int y) {
 	case 'd':
 		x0++;
 		break;
+	case 'i':
+		y1++;
+		break;
+	case 'k':
+		y1--;
+		break;
+	case 'j':
+		x1--;
+		break;
+	case 'l':
+		x1++;
+		break;
 	}
 	glutPostRedisplay();
 }

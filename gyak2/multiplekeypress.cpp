@@ -6,7 +6,7 @@ GLint keyStates[256];
 vec2 pointA = { 100, 40 };
 vec2 pointB = { 200, 200 };
 
-GLfloat delta = 0.01;
+GLfloat delta = 0.9;
 
 void init(void)
 {
@@ -28,8 +28,14 @@ void keyOperations() {
 	if (keyStates['a']) { pointA.x -= delta; }
 	if (keyStates['d']) { pointA.x += delta; }
 
-	if (keyStates['s']) { pointB.y -= delta; }
-	if (keyStates['w']) { pointB.y += delta; }
+	if (keyStates['s']) { pointA.y -= delta; }
+	if (keyStates['w']) { pointA.y += delta; }
+	
+	if (keyStates['j']) { pointB.x -= delta; }
+	if (keyStates['l']) { pointB.x += delta; }
+
+	if (keyStates['k']) { pointB.y -= delta; }
+	if (keyStates['i']) { pointB.y += delta; }
 
 
 	glutPostRedisplay();

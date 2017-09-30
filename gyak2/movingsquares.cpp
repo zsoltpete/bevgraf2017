@@ -22,8 +22,8 @@ void display()
 
 void update(int n)
 {
-	center[0] += novX;
-	if (center[0] + halfSize > 400 || center[0] - halfSize < 0)
+	center[1] += novX;
+	if (center[1] + halfSize > 300 || center[1] - halfSize < 0)
 		novX *= -1;
 	glutPostRedisplay();
 
