@@ -24,11 +24,8 @@ void display()
     glClear(GL_COLOR_BUFFER_BIT);
 	
 	setColor(rectColor);
-	glRecti(center[0] - halfSize, center[1] - halfSize, center[0] + halfSize, center[1] + halfSize);
-	setColor(red);
-	glBegin(GL_POINTS);
-		glVertex2f(center.x, center.y);
-	glEnd();
+	drawRect(center, halfSize);
+	drawPoint(center, red);
 	glutSwapBuffers();
   }
 	
@@ -58,20 +55,12 @@ void keyboard(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
-GLint getActivePoint1(vec2 p, GLint size, GLint sens, GLint x, GLint y) {
-	GLint i, s= sens * sens;
-	vec2 P = { (float)x, (float)y };
 
-	for (i = 0; i < size; i++)
-		if (dist(p, P) < s)
-			return i;
-	return -1;
-}
 
 void processMouse(GLint button, GLint action, GLint xMouse, GLint yMouse) {
 	GLint i;
 	if (button == GLUT_LEFT_BUTTON && action == GLUT_DOWN)
-		if ((i = getActivePoint1(center, 4, 8, xMouse, 400 - yMouse)) != -1)
+		if ((i = getActivePoint(center, 1, 8, xMouse, 400 - yMouse)) != -1)
 			dragged = i;
 	if (button == GLUT_LEFT_BUTTON && action == GLUT_UP)
 		dragged = -1;

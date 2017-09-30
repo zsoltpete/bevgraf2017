@@ -38,9 +38,26 @@ inline void setColor(Color color){
   }
 }
 
+inline void drawPoint(vec2 point, Color color = none){
+  
+  if (color != none) {
+      setColor(color);
+  }
+  glBegin(GL_POINTS);
+    glVertex2f(point.x, point.y);
+  glEnd();
+  
+}
+
+/*
+ * point1, point2, point3, point4: Az alakzat sarkait reprezentáló pontok 
+ * isFilled: Legyen-e kitöltve a háromsz9g vagy nem
+ * color: Háromszög színe
+ */
+
 inline void drawRect(vec2 point1, vec2 point2, vec2 point3, vec2 point4, bool isFilled = true, Color color = none){
   
-	glClear(GL_COLOR_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	if (isFilled == true) {
 	    glBegin(GL_POLYGON);
 	}else{
@@ -55,12 +72,50 @@ inline void drawRect(vec2 point1, vec2 point2, vec2 point3, vec2 point4, bool is
 	glVertex2i(point3.x, point3.y);
 	glVertex2i(point4.x, point4.y);
 	glEnd();
-	glFlush(); 
+	//glFlush(); 
 }
+
+/*
+ * bottomLeft: Bal alsó sarok pontja
+ * topRight: Jobb felső sarokban lévő pont
+ * color: Alakzat színe
+ */
+
+inline void drawRect(vec2 bottomLeft, vec2 topRight, Color color = none){
+  
+  glClear(GL_COLOR_BUFFER_BIT);
+  if (color != none) {
+    setColor(color);
+  }
+  glRecti(bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
+  
+}
+
+/*
+ * center: Alakzat közepét reprezentáló pont
+ * halfSize: Alakzat fele
+ * color: Alakzat színe
+ */
+
+inline void drawRect(vec2 center, GLfloat halfSize, Color color = none){
+  
+  glClear(GL_COLOR_BUFFER_BIT);
+  if (color != none) {
+    setColor(color);
+  }
+  glRecti(center.x - halfSize, center.y - halfSize, center.x + halfSize, center.y + halfSize);
+  
+}
+
+/*
+ * point1, point2, point3: A háromszög sarkait reprezentáló pontok 
+ * isFilled: Legyen-e kitöltve a háromsz9g vagy nem
+ * color: Háromszög színe
+ */
 
 inline void drawTriangle(vec2 point1, vec2 point2, vec2 point3, bool isFilled = true, Color color = none){
   
-	glClear(GL_COLOR_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT);
 	if (isFilled == true) {
 	    glBegin(GL_POLYGON);
 	}else{
@@ -73,13 +128,24 @@ inline void drawTriangle(vec2 point1, vec2 point2, vec2 point3, bool isFilled = 
 	glVertex2i(point2.x, point2.y);
 	glVertex2i(point3.x, point3.y);
 	glEnd();
-	glFlush(); 
+	//glFlush(); 
 }
-  
-  
-  
 
-  
-
+/*
+ * p: ellenőrésre váró pont
+ * size: optional: itt mindig egy legyen
+ * sens: A pont és az egér kattintás közötti érzékenységre vonatkozik
+ * x: Egér x koordináta
+ * y: Egér y koordináta 
+ * return: -1 ha nem az ellenőrzött pontra kattintott, 1 ha igen
+ */
+GLint getActivePoint(vec2 p, GLint size, GLint sens, GLint x, GLint y) {
+	GLint i, s= sens * sens;
+	vec2 P = { (float)x, (float)y };
+	for (i = 0; i < size; i++)
+		if (dist(p, P) < s)
+			return i;
+	return -1;
+}
 
 #endif 
