@@ -140,7 +140,7 @@ inline void drawTriangle(vec2 point1, vec2 point2, vec2 point3, bool isFilled = 
  * return: -1 ha nem az ellenőrzött pontra kattintott, 1 ha igen
  */
 GLint getActivePoint(vec2 p, GLint size, GLint sens, GLint x, GLint y) {
-	GLint i, s= sens * sens;
+	GLint i, s= sens;
 	vec2 P = { (float)x, (float)y };
 	for (i = 0; i < size; i++)
 		if (dist(p, P) < s)

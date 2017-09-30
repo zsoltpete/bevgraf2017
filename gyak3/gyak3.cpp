@@ -1,6 +1,5 @@
 #include "graphicalhelper.h"
 
-
 GLint novX = 1;
 GLint halfSize = 50;
 vec2 center = { 200, 200 };
@@ -18,17 +17,12 @@ void init() {
 	glEnable(GL_POINT_SMOOTH);
 }
 
-void display()
-{
-  if ((center.x > 0) && (center.x < 400) && (center.y > 0) && (center.y < 400)) {
-    glClear(GL_COLOR_BUFFER_BIT);
-	
+void display(){
+	glClear(GL_COLOR_BUFFER_BIT);
 	setColor(rectColor);
 	drawRect(center, halfSize);
 	drawPoint(center, red);
 	glutSwapBuffers();
-  }
-	
 }
 
 void keyboard(unsigned char key, int x, int y) {
@@ -60,7 +54,7 @@ void keyboard(unsigned char key, int x, int y) {
 void processMouse(GLint button, GLint action, GLint xMouse, GLint yMouse) {
 	GLint i;
 	if (button == GLUT_LEFT_BUTTON && action == GLUT_DOWN)
-		if ((i = getActivePoint(center, 1, 8, xMouse, 400 - yMouse)) != -1)
+		if ((i = getActivePoint(center, 1, 10, xMouse, 400 - yMouse)) != -1)
 			dragged = i;
 	if (button == GLUT_LEFT_BUTTON && action == GLUT_UP)
 		dragged = -1;
@@ -69,9 +63,21 @@ void processMouse(GLint button, GLint action, GLint xMouse, GLint yMouse) {
 void processMouseActiveMotion(GLint xMouse, GLint yMouse) {
 	GLint i;
 	if (dragged >= 0) {
-		center.x = xMouse;
-		center.y = 400 - yMouse;
-		glutPostRedisplay();
+	  if(xMouse > 400){
+	    center.x = 400;
+	  }else if(xMouse < 0){
+	    center.x = 0;
+	  }else {
+	    center.x = xMouse;
+	  }
+	  if(yMouse > 400){
+	    center.y = 0;
+	  }else if(yMouse < 0){
+	    center.y = 400;
+	  }else {
+	    center.y = 400-yMouse;
+	  }
+	  glutPostRedisplay();
 	}
 }
 
@@ -79,7 +85,7 @@ int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-	glutInitWindowSize(400, 300);
+	glutInitWindowSize(400, 400);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow(argv[0]);
 	init();
