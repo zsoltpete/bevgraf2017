@@ -41,10 +41,10 @@ inline void setColor ( Color color )
     case blue :
         glColor3f ( 0.0, 0.0, 1.0 );
         break;
-    case white :
+    case black :
         glColor3f ( 0.0, 0.0, 0.0 );
         break;
-    case black :
+    case white :
         glColor3f ( 1.0, 1.0, 1.0 );
         break;
     case gray :
@@ -58,6 +58,39 @@ inline void setColor ( Color color )
         break;
     case brown :
         glColor3f ( 0.5, 0.0, 0.0 );
+        break;
+    }
+}
+
+inline void setBackgroundColor ( Color color )
+{
+    switch ( color ) {
+    case red :
+        glClearColor ( 1.0, 0.0, 0.0, 1.0 );
+        break;
+    case green :
+        glClearColor ( 0.0, 1.0, 0.0, 1.0 );
+        break;
+    case blue :
+        glClearColor ( 0.0, 0.0, 1.0, 1.0 );
+        break;
+    case black :
+        glClearColor ( 0.0, 0.0, 0.0, 1.0 );
+        break;
+    case white :
+        glClearColor ( 1.0, 1.0, 1.0, 1.0 );
+        break;
+    case gray :
+        glClearColor ( 0.1, 0.1, 0.1, 1.0 );
+        break;
+    case purple :
+        glClearColor ( 75.0 / 255.0, 0.0, 130.0 / 255.0, 1.0 );
+        break;
+    case yellow :
+        glClearColor ( 1.0, 1.0, 0.0, 1.0 );
+        break;
+    case brown :
+        glClearColor ( 0.5, 0.0, 0.0, 1.0 );
         break;
     }
 }
@@ -202,9 +235,11 @@ void drawSemicircle ( vec2 O, GLdouble r )
     glEnd();
 }
 
-void drawCircle ( vec2 O, GLdouble r )
+inline void drawCircle ( vec2 O, GLdouble r, Color color = none )
 {
-
+    if (color != none){
+      setColor(color);
+    }
     glBegin ( GL_LINE_LOOP );
     for ( GLdouble t = 0; t <= 2 * pi(); t += 0.01 ) {
         glVertex2d ( O.x + r * cos ( t ), O.y + r * sin ( t ) );
@@ -243,6 +278,56 @@ void drawAllDiagonal(Matrix matrix, Color color1 = none, Color color2 = none){
       drawLine(matrix[i], matrix[j], color1, color2);
     }
   }
+}
+
+void drawPointedBackground(vec2 windowSize, int distance = 1, Color pointsColor = none, Color backgroundColor = none){
+  
+  if (backgroundColor != none){
+    setBackgroundColor(backgroundColor);
+  }
+  if (pointsColor != none){
+    setColor(pointsColor);
+  }
+  for (int i = 0; i < windowSize.x; i += distance){
+    for (int j = 0; j < windowSize.y; j += distance){
+      drawPoint(vec2(i, j));
+    }
+  }
+  
+}
+
+bool isPointInCircle(vec2 circleCenter, vec2 actualPoint, GLdouble radius){
+  // Segéd változó az (x - u)^2
+  GLdouble xu2 = pow(( circleCenter.x - actualPoint.x ), 2);
+  // Segéd változó az (y - z)^2
+  GLdouble yz2 = pow(( circleCenter.y - actualPoint.y ), 2);
+  // Segéd változó az (x - u)^2 + (y - z)^2 - r^2
+  GLdouble sum = xu2 + yz2 - pow(radius, 2);
+  std::cout << sum << std::endl;
+  if (sum < 0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+void drawPointedBackgroundWithCircle(vec2 windowSize, vec2 circleCenter, GLdouble radius, int distance = 1, Color pointsColor = none, Color circlePointsColor = none, Color backgroundColor = none){
+  
+  if (backgroundColor != none){
+    setBackgroundColor(backgroundColor);
+  }
+  for (int i = 0; i < windowSize.x; i += distance){
+    for (int j = 0; j < windowSize.y; j += distance){
+      vec2 actualPoint = vec2(i, j);
+      if (isPointInCircle(circleCenter, actualPoint, radius)){
+	setColor(circlePointsColor);
+      }else{
+	setColor(pointsColor);
+      }
+      drawPoint(actualPoint);
+    }
+  }
+  
 }
 
 #endif
