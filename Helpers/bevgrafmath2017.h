@@ -1176,17 +1176,17 @@ inline float length(vec4 v)
 ///////////////////////////////////////////////////////////////////////////////
 // Négyzetes hossz
 ///////////////////////////////////////////////////////////////////////////////
-inline float sqrlength(vec2 v)
+inline float length2(vec2 v)
 {
 	return dot(v, v);
 }
 
-inline float sqrlength(vec3 v)
+inline float length2(vec3 v)
 {
 	return dot(v, v);
 }
 
-inline float sqrlength(vec4 v)
+inline float length2(vec4 v)
 {
 	return dot(v, v);
 }
@@ -1207,6 +1207,24 @@ inline float dist(vec3 v1, vec3 v2)
 inline float dist(vec4 v1, vec4 v2)
 {
 	return length(v1 - v2);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Négyzetes távolság
+///////////////////////////////////////////////////////////////////////////////
+inline float dist2(vec2 v1, vec2 v2)
+{
+	return length2(v1 - v2);
+}
+
+inline float dist2(vec3 v1, vec3 v2)
+{
+	return length2(v1 - v2);
+}
+
+inline float dist2(vec4 v1, vec4 v2)
+{
+	return length2(v1 - v2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1238,6 +1256,32 @@ inline vec3 normalize(vec3 v)
 inline vec4 normalize(vec4 v)
 {
 	return v / length(v);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Bezárt szög (radiánban, egységvektorokkal)
+///////////////////////////////////////////////////////////////////////////////
+inline float angleBetweenFast(vec2 v1, vec2 v2)
+{
+	return acosf(dot(v1, v2));
+}
+
+inline float angleBetweenFast(vec3 v1, vec3 v2)
+{
+	return acosf(dot(v1, v2));
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Bezárt szög (radiánban, tetszõleges vektorokkal)
+///////////////////////////////////////////////////////////////////////////////
+inline float angleBetween(vec2 v1, vec2 v2)
+{
+	return angleBetweenFast(normalize(v1), normalize(v2));
+}
+
+inline float angleBetween(vec3 v1, vec3 v2)
+{
+	return angleBetweenFast(normalize(v1), normalize(v2));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
