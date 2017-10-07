@@ -95,7 +95,7 @@ inline void setBackgroundColor ( Color color )
     }
 }
 
-inline void drawPoint ( vec2 point, Color color = none )
+void drawPoint ( vec2 point, Color color = none )
 {
 
     if ( color != none ) {
@@ -108,12 +108,13 @@ inline void drawPoint ( vec2 point, Color color = none )
 }
 
 /*
+ * Egy négyszöget rajzol a megadott pontokból.
  * point1, point2, point3, point4: Az alakzat sarkait reprezentáló pontok
  * isFilled: Legyen-e kitöltve a háromsz9g vagy nem
  * color: Háromszög színe
  */
 
-inline void drawRect ( vec2 point1, vec2 point2, vec2 point3, vec2 point4, bool isFilled = true, Color color = none )
+void drawRect ( vec2 point1, vec2 point2, vec2 point3, vec2 point4, bool isFilled = true, Color color = none )
 {
 
     //glClear(GL_COLOR_BUFFER_BIT);
@@ -135,13 +136,13 @@ inline void drawRect ( vec2 point1, vec2 point2, vec2 point3, vec2 point4, bool 
 }
 
 /*
+ * Egy négyzetet rajzol a megadott bal alsó és jobb felső pontból.
  * bottomLeft: Bal alsó sarok pontja
  * topRight: Jobb felső sarokban lévő pont
  * color: Alakzat színe
  */
 
-inline void drawRect ( vec2 bottomLeft, vec2 topRight, Color color = none )
-{
+void drawRect ( vec2 bottomLeft, vec2 topRight, Color color = none ){
 
     glClear ( GL_COLOR_BUFFER_BIT );
     if ( color != none ) {
@@ -152,13 +153,13 @@ inline void drawRect ( vec2 bottomLeft, vec2 topRight, Color color = none )
 }
 
 /*
+ * Egy négyzetet rajzol a négyzet középpontja és "sugara" alapján.
  * center: Alakzat közepét reprezentáló pont
  * halfSize: Alakzat fele
  * color: Alakzat színe
  */
 
-inline void drawRect ( vec2 center, GLfloat halfSize, Color color = none )
-{
+void drawRect ( vec2 center, GLfloat halfSize, Color color = none ){
 
     glClear ( GL_COLOR_BUFFER_BIT );
     if ( color != none ) {
@@ -169,13 +170,12 @@ inline void drawRect ( vec2 center, GLfloat halfSize, Color color = none )
 }
 
 /*
+ * Egy háromszöget rajzol a pontjai alapján.
  * point1, point2, point3: A háromszög sarkait reprezentáló pontok
  * isFilled: Legyen-e kitöltve a háromsz9g vagy nem
  * color: Háromszög színe
  */
-
-inline void drawTriangle ( vec2 point1, vec2 point2, vec2 point3, bool isFilled = true, Color color = none )
-{
+void drawTriangle ( vec2 point1, vec2 point2, vec2 point3, bool isFilled = true, Color color = none ){
 
     //glClear(GL_COLOR_BUFFER_BIT);
     if ( isFilled == true ) {
@@ -193,20 +193,29 @@ inline void drawTriangle ( vec2 point1, vec2 point2, vec2 point3, bool isFilled 
     //glFlush();
 }
 
-void drawLine(vec2 from, vec2 to, Color color1 = none, Color color2 = none){
-  glBegin ( GL_LINE_LOOP );
-  if (color1 != none) {
-    setColor(color1);
-  }
-  glVertex2i ( from.x, from.y );
-  if (color2 != none) {
-    setColor(color2);
-  }
-  glVertex2i ( to.x, to.y );
-  glEnd();
+/*
+ * Egy vonalat húz kezdő és vég pont alapján.
+ * from: Kezdőpont
+ * to: Végpont
+ * color1: Kezdőszín
+ * color2: Végszín
+ */
+void drawLine ( vec2 from, vec2 to, Color color1 = none, Color color2 = none )
+{
+    glBegin ( GL_LINE_LOOP );
+    if ( color1 != none ) {
+        setColor ( color1 );
+    }
+    glVertex2i ( from.x, from.y );
+    if ( color2 != none ) {
+        setColor ( color2 );
+    }
+    glVertex2i ( to.x, to.y );
+    glEnd();
 }
 
 /*
+ * Eldönti hogy egy adott pontra kattintottunk-e.
  * p: ellenőrésre váró pont
  * size: optional: itt mindig egy legyen
  * sens: A pont és az egér kattintás közötti érzékenységre vonatkozik
@@ -225,6 +234,11 @@ GLint getActivePoint ( vec2 p, GLint size, GLint sens, GLint x, GLint y )
     return -1;
 }
 
+/*
+ * Egy félkört rajzol.
+ * O: Félkör középpontja
+ * r: Félkör sugara
+ */
 void drawSemicircle ( vec2 O, GLdouble r )
 {
 
@@ -235,10 +249,16 @@ void drawSemicircle ( vec2 O, GLdouble r )
     glEnd();
 }
 
-inline void drawCircle ( vec2 O, GLdouble r, Color color = none )
+/*
+ * Egy kört rajzol.
+ * O: Kör középpontja
+ * r: Kör sugara
+ * color: Rajzolási szín
+ */
+void drawCircle ( vec2 O, GLdouble r, Color color = none )
 {
-    if (color != none){
-      setColor(color);
+    if ( color != none ) {
+        setColor ( color );
     }
     glBegin ( GL_LINE_LOOP );
     for ( GLdouble t = 0; t <= 2 * pi(); t += 0.01 ) {
@@ -247,6 +267,9 @@ inline void drawCircle ( vec2 O, GLdouble r, Color color = none )
     glEnd();
 }
 
+/*
+ * Egy ellipszist rajzol.
+ */
 void drawEllipse ( vec2 O, GLdouble a, GLdouble b )
 {
 
@@ -257,77 +280,117 @@ void drawEllipse ( vec2 O, GLdouble a, GLdouble b )
     glEnd();
 }
 
+/*
+ * Egy tetszőleges szimetrikus sokszöget rajzol.
+ * type: Sokszög csúcsainak száma
+ * O: Sokszög középpontja
+ * r: Sokszög "sugara"
+ * return: Visszadaja a sokszög csúcsainak pointjait egy vector-ban
+ */
 Matrix drawPoligon ( int type, vec2 O, GLdouble r )
 {
     Matrix matrix;
     GLdouble jump = two_pi() / type;
     glBegin ( GL_LINE_LOOP );
     for ( GLdouble t = 0; t <= 2 * pi(); t += jump ) {
-	GLdouble x = O.x + r * cos ( t );
-	GLdouble y = O.y + r * sin ( t );
+        GLdouble x = O.x + r * cos ( t );
+        GLdouble y = O.y + r * sin ( t );
         glVertex2d ( x, y );
-	matrix.push_back(vec2(x, y));
+        matrix.push_back ( vec2 ( x, y ) );
     }
     glEnd();
     return matrix;
 }
 
-void drawAllDiagonal(Matrix matrix, Color color1 = none, Color color2 = none){
-  for (int i = 0; i< matrix.size() - 1; i++){
-    for (int j = i + 1;j < matrix.size() - 1; j++){
-      drawLine(matrix[i], matrix[j], color1, color2);
+/*
+ * Berajzolja egy tetszőleges sokszög összes átlóját, de csak azt.
+ * matrix: A sokszög csúcsainak pontjait reprezentálja
+ * color1: Kezdőszín
+ * color2: Végszín
+ */
+void drawAllDiagonal ( Matrix matrix, Color color1 = none, Color color2 = none )
+{
+    for ( int i = 0; i< matrix.size() - 1; i++ ) {
+        for ( int j = i + 1; j < matrix.size() - 1; j++ ) {
+            drawLine ( matrix[i], matrix[j], color1, color2 );
+        }
     }
-  }
 }
 
-void drawPointedBackground(vec2 windowSize, int distance = 1, Color pointsColor = none, Color backgroundColor = none){
-  
-  if (backgroundColor != none){
-    setBackgroundColor(backgroundColor);
-  }
-  if (pointsColor != none){
-    setColor(pointsColor);
-  }
-  for (int i = 0; i < windowSize.x; i += distance){
-    for (int j = 0; j < windowSize.y; j += distance){
-      drawPoint(vec2(i, j));
+/*
+ * Egy pontozott hátteret rajzol.
+ * windowSize: Ablak mérete
+ * distance: Pontok közötti távolság
+ * pointsColor: Pontok színe
+ * backgroundColor: Háttérszín
+ */
+void drawPointedBackground ( vec2 windowSize, int distance = 1, Color pointsColor = none, Color backgroundColor = none )
+{
+
+    if ( backgroundColor != none ) {
+        setBackgroundColor ( backgroundColor );
     }
-  }
-  
+    if ( pointsColor != none ) {
+        setColor ( pointsColor );
+    }
+    for ( int i = 0; i < windowSize.x; i += distance ) {
+        for ( int j = 0; j < windowSize.y; j += distance ) {
+            drawPoint ( vec2 ( i, j ) );
+        }
+    }
+
 }
 
-bool isPointInCircle(vec2 circleCenter, vec2 actualPoint, GLdouble radius){
-  // Segéd változó az (x - u)^2
-  GLdouble xu2 = pow(( circleCenter.x - actualPoint.x ), 2);
-  // Segéd változó az (y - z)^2
-  GLdouble yz2 = pow(( circleCenter.y - actualPoint.y ), 2);
-  // Segéd változó az (x - u)^2 + (y - z)^2 - r^2
-  GLdouble sum = xu2 + yz2 - pow(radius, 2);
-  std::cout << sum << std::endl;
-  if (sum < 0){
-    return true;
-  }else{
-    return false;
-  }
+/*
+ * Eldönti hogy az adott pont benne van-e a körben.
+ * circleCenter: Kör középpontja
+ * actualPoint: Aktuális pont
+ * radius: Kör sugara
+ * return: Igaz ha a pont a körben van, hamis ha kívül
+ */
+bool isPointInCircle ( vec2 circleCenter, vec2 actualPoint, GLdouble radius )
+{
+    // Segéd változó az (x - u)^2
+    GLdouble xu2 = pow ( ( circleCenter.x - actualPoint.x ), 2 );
+    // Segéd változó az (y - z)^2
+    GLdouble yz2 = pow ( ( circleCenter.y - actualPoint.y ), 2 );
+    // Segéd változó az (x - u)^2 + (y - z)^2 - r^2
+    GLdouble sum = xu2 + yz2 - pow ( radius, 2 );
+    if ( sum < 0 ) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-void drawPointedBackgroundWithCircle(vec2 windowSize, vec2 circleCenter, GLdouble radius, int distance = 1, Color pointsColor = none, Color circlePointsColor = none, Color backgroundColor = none){
-  
-  if (backgroundColor != none){
-    setBackgroundColor(backgroundColor);
-  }
-  for (int i = 0; i < windowSize.x; i += distance){
-    for (int j = 0; j < windowSize.y; j += distance){
-      vec2 actualPoint = vec2(i, j);
-      if (isPointInCircle(circleCenter, actualPoint, radius)){
-	setColor(circlePointsColor);
-      }else{
-	setColor(pointsColor);
-      }
-      drawPoint(actualPoint);
+/*
+ * Egy pontozott hátteret rajzol, benne egy körrel melynek a színe különböző lehet..
+ * windowSize: Ablak mérete
+ * circleCenter: Kör középpontja
+ * radius: Kör sugara
+ * distance: Pontok közötti távolság
+ * pointsColor: Pontok színe
+ * circlePointsColor: Körben lévő pontok színe
+ * backgroundColor: Háttérszín
+ */
+void drawPointedBackgroundWithCircle ( vec2 windowSize, vec2 circleCenter, GLdouble radius, int distance = 1, Color pointsColor = none, Color circlePointsColor = none, Color backgroundColor = none )
+{
+
+    if ( backgroundColor != none ) {
+        setBackgroundColor ( backgroundColor );
     }
-  }
-  
+    for ( int i = 0; i < windowSize.x; i += distance ) {
+        for ( int j = 0; j < windowSize.y; j += distance ) {
+            vec2 actualPoint = vec2 ( i, j );
+            if ( isPointInCircle ( circleCenter, actualPoint, radius ) ) {
+                setColor ( circlePointsColor );
+            } else {
+                setColor ( pointsColor );
+            }
+            drawPoint ( actualPoint );
+        }
+    }
+
 }
 
 #endif
