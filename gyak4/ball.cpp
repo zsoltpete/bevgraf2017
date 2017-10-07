@@ -1,17 +1,16 @@
 #include "graphicalhelper.h"
 
 vec2 windowSize = vec2(800, 800);
-vec2 circleCenter = vec2 ( windowSize.x / 2.0, windowSize.y / 2.0 );
-vec2 changeCenterVector = vec2 ( 2,3 );
-GLdouble circleRadius = 100.0;
+
+Circle circle = Circle(vec2 ( windowSize.x / 2.0, windowSize.y / 2.0 ), 100.0, vec2 ( 2,3 ));
 
 void handleCircleMoving() {
-    circleCenter += changeCenterVector;
-    if ( circleCenter.x + circleRadius > windowSize.x || circleCenter.x - circleRadius < 0 ) {
-        changeCenterVector.x *= -1;
+    circle.center += circle.speed;
+    if ( circle.center.x + circle.r > windowSize.x || circle.center.x - circle.r < 0 ) {
+        circle.speed.x *= -1;
     }
-    if ( circleCenter.y + circleRadius > windowSize.y || circleCenter.y - circleRadius < 0 ) {
-        changeCenterVector.y *= -1;
+    if ( circle.center.y + circle.r > windowSize.y || circle.center.y - circle.r < 0 ) {
+        circle.speed.y *= -1;
     }
 }
 
@@ -27,8 +26,8 @@ void init() {
 
 void display() {
     glClear ( GL_COLOR_BUFFER_BIT );
-    drawCircle ( circleCenter, circleRadius, red );
-    drawPointedBackgroundWithCircle(windowSize, circleCenter, circleRadius, 17, black, red, gray);
+    drawCircle ( circle, red );
+    drawPointedBackgroundWithCircle(windowSize, circle, 17, black, red, gray);
     glutSwapBuffers();
 }
 
