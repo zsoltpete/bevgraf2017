@@ -9,6 +9,19 @@
 
 typedef std::vector<vec2 > Matrix;
 
+struct Circle {
+  
+  vec2 speed;
+  double r;
+  vec2 center;
+  Circle(vec2 center, double r, vec2 speed = vec2(0,0)):
+		center(center),
+		r(r),
+		speed(speed)
+	{}
+  
+};
+
 enum Color {
 
     none,
@@ -268,6 +281,23 @@ void drawCircle ( vec2 O, GLdouble r, Color color = none )
 }
 
 /*
+ * Egy kört rajzol.
+ * circle: A kört reprezentáló objektum
+ * color: Rajzolási szín
+ */
+void drawCircle ( Circle circle, Color color = none )
+{
+    if ( color != none ) {
+        setColor ( color );
+    }
+    glBegin ( GL_LINE_LOOP );
+    for ( GLdouble t = 0; t <= 2 * pi(); t += 0.01 ) {
+        glVertex2d ( circle.center.x + circle.r * cos ( t ), circle.center.y + circle.r * sin ( t ) );
+    }
+    glEnd();
+}
+
+/*
  * Egy ellipszist rajzol.
  */
 void drawEllipse ( vec2 O, GLdouble a, GLdouble b )
@@ -366,14 +396,13 @@ bool isPointInCircle ( vec2 circleCenter, vec2 actualPoint, GLdouble radius )
 /*
  * Egy pontozott hátteret rajzol, benne egy körrel melynek a színe különböző lehet..
  * windowSize: Ablak mérete
- * circleCenter: Kör középpontja
- * radius: Kör sugara
+ * circle: A kört reprezentáló objektum
  * distance: Pontok közötti távolság
  * pointsColor: Pontok színe
  * circlePointsColor: Körben lévő pontok színe
  * backgroundColor: Háttérszín
  */
-void drawPointedBackgroundWithCircle ( vec2 windowSize, vec2 circleCenter, GLdouble radius, int distance = 1, Color pointsColor = none, Color circlePointsColor = none, Color backgroundColor = none )
+void drawPointedBackgroundWithCircle ( vec2 windowSize, Circle circle, int distance = 1, Color pointsColor = none, Color circlePointsColor = none, Color backgroundColor = none )
 {
 
     if ( backgroundColor != none ) {
@@ -382,7 +411,7 @@ void drawPointedBackgroundWithCircle ( vec2 windowSize, vec2 circleCenter, GLdou
     for ( int i = 0; i < windowSize.x; i += distance ) {
         for ( int j = 0; j < windowSize.y; j += distance ) {
             vec2 actualPoint = vec2 ( i, j );
-            if ( isPointInCircle ( circleCenter, actualPoint, radius ) ) {
+            if ( isPointInCircle ( circle.center, actualPoint, circle.r ) ) {
                 setColor ( circlePointsColor );
             } else {
                 setColor ( pointsColor );
