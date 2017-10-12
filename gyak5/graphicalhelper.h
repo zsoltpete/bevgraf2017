@@ -250,6 +250,26 @@ GLint getActivePoint ( vec2 p, GLint size, GLint sens, GLint x, GLint y )
 }
 
 /*
+ * Eldönti hogy egy adott pontra kattintottunk-e.
+ * p: ellenőrésre váró pont
+ * size: optional: itt mindig egy legyen
+ * sens: A pont és az egér kattintás közötti érzékenységre vonatkozik
+ * x: Egér x koordináta
+ * y: Egér y koordináta
+ * return: -1 ha nem az ellenőrzött pontra kattintott, 1 ha igen
+ */
+GLint getActivePoint ( Matrix p, GLint size, GLint sens, GLint x, GLint y )
+{
+    GLint i, s= sens * sens;
+    vec2 P = { ( float ) x, ( float ) y };
+    for ( i = 0; i < size; i++ )
+        if ( dist ( p[i], P ) < s ) {
+            return i;
+        }
+    return -1;
+}
+
+/*
  * Egy félkört rajzol.
  * O: Félkör középpontja
  * r: Félkör sugara
