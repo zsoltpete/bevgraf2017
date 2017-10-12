@@ -1,5 +1,8 @@
 #include "graphicalhelper.h"
 
+//Globális elemek
+vec2 tInverval = vec2 ( -1, 2 );
+vec4 tPoints = vec4 (-1.0,0.0,1.0,2.0);
 
 double winWidth = 800, winHeight = 800;
 
@@ -12,19 +15,12 @@ Matrix initPoints() {
     return points;
 }
 
+Matrix points = initPoints();
+
 mat24 calculateG ( mat24 G, Matrix points ) {
     G[0] = vec4 ( points[0].x, points[1].x, points[2].x, points[3].x );
     G[1] = vec4 ( points[0].y, points[1].y, points[2].y, points[3].y );
     return G;
-}
-
-Vector initTPoints ( double p1, double p2, double p3, double p4 ) {
-    Vector tPoints;
-    tPoints.push_back ( p1 );
-    tPoints.push_back ( p2 );
-    tPoints.push_back ( p3 );
-    tPoints.push_back ( p4 );
-    return tPoints;
 }
 
 mat4 convertMatrix4Tomat4 ( Matrix4 matrix ) {
@@ -37,35 +33,36 @@ mat4 convertMatrix4Tomat4 ( Matrix4 matrix ) {
     return MInvers;
 }
 
-void printTPoints(Matrix points){
-  for(int i = 0;i< points.size(); i++){
-    vec2 point = points[i];
-    drawPoint(point, blue);
-  }
+void printTPoints ( Matrix points ) {
+    for ( int i = 0; i< points.size(); i++ ) {
+        vec2 point = points[i];
+        drawPoint ( point, blue );
+    }
 }
 
-void calculator() {
-    Matrix points = initPoints();
+void calculator(vec2 t, vec4 tPoints, Matrix points ) {
     mat24 G = mat24 ( 0 );
     G = calculateG ( G, points );
-    //t intervallum
-    vec2 t = vec2 ( -1, 2 );
-    //4 pont
-    Vector tPoints = initTPoints ( -1.0,0.0,1.0,2.0 );
+    //Matrix4 adatszerkezet bevezetése a ciklusban lévő feltöltés végett
     Matrix4 tmpMInvers;
-    for ( int i = 0; i< tPoints.size(); i++ ) {
-        tmpMInvers.push_back ( vec4 ( pow ( tPoints[0], 3-i ), pow ( tPoints[1], 3-i ), pow ( tPoints[2], 3-i ), pow ( tPoints[3], 3-i ) ) );
+    //Feltöltés oszlop foltanosan 																						    
+    for ( int i = 0; i< 4; i++ ) {
+         tmpMInvers.push_back ( vec4 ( pow ( tPoints.x, 3-i ), pow ( tPoints.y, 3-i),pow ( tPoints.z, 3-i), pow ( tPoints.w, 3-i) ) ); 
+	 printMathObject(tmpMInvers[i]);
     }
     //Más adatszerkezettel töltöm fel azt konvertálom át mat4-be
     mat4 MInvers = convertMatrix4Tomat4 ( tmpMInvers );
     mat4 M = inverse ( MInvers );
     mat24 C = G*M;
-    for ( double i = t.x; i < t.y; i += 0.001 ) {
-        vec4 tVector = vec4 ( pow ( i, 3 ), pow ( i, 2 ), pow ( i, 1 ), pow ( i, 0 ) );
+    glBegin ( GL_LINE_STRIP );
+    for ( double i = t.x; i < t.y; i += 0.0001 ) {
+	//T vektor inicialaizálása
+        vec4 tVector = vec4 ( pow ( i, 3 ), pow ( i, 2 ), i,1 );
         vec2 printPoint = C*tVector;
-        drawPoint ( printPoint, red );
+        glVertex2f ( printPoint.x, printPoint.y );
     }
-    printTPoints(points);
+    glEnd();
+    printTPoints ( points );
 }
 
 
@@ -77,17 +74,15 @@ void init() {
     gluOrtho2D ( 0.0, winWidth, 0.0, winHeight );
     glShadeModel ( GL_FLAT );
     glEnable ( GL_POINT_SMOOTH );
-    glEnable ( GL_LINE_STIPPLE );
     glPointSize ( 5.0 );
-    glLineWidth ( 5.0 );
-    glLineStipple ( 1, 0xFF00 );
+    glLineWidth ( 2.0 );
 }
 
 void display() {
 
     glClear ( GL_COLOR_BUFFER_BIT );
     setColor ( red );
-    calculator();
+    calculator(tInverval, tPoints, points);
     glutSwapBuffers();
 
 }

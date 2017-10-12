@@ -7,9 +7,9 @@
 #include <iostream>
 #include <vector>
 
-typedef std::vector<vec2 > Matrix;
-typedef std::vector<vec4 > Matrix4;
-typedef std::vector<double > Vector;
+typedef std::vector<vec2 > Matrix;     	//vec2 tárolása
+typedef std::vector<vec4 > Matrix4;	//vec4 tárolása
+typedef std::vector<double > Vector;	//double-k tárolása
 
 struct Circle {
   
@@ -365,6 +365,7 @@ void drawPointedBackground ( vec2 windowSize, int distance = 1, Color pointsColo
     if ( pointsColor != none ) {
         setColor ( pointsColor );
     }
+    
     for ( int i = 0; i < windowSize.x; i += distance ) {
         for ( int j = 0; j < windowSize.y; j += distance ) {
             drawPoint ( vec2 ( i, j ) );
