@@ -50,7 +50,6 @@ void calculator ( vec2 t, vec4 tPoints, Matrix points ) {
     //Feltöltés oszlop foltanosan
     for ( int i = 0; i< 4; i++ ) {
         tmpMInvers.push_back ( vec4 ( pow ( tPoints.x, 3-i ), pow ( tPoints.y, 3-i ),pow ( tPoints.z, 3-i ), pow ( tPoints.w, 3-i ) ) );
-        printMathObject ( tmpMInvers[i] );
     }
     //Más adatszerkezettel töltöm fel azt konvertálom át mat4-be
     mat4 MInvers = convertMatrix4Tomat4 ( tmpMInvers );
