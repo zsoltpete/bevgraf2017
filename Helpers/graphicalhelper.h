@@ -7,7 +7,9 @@
 #include <iostream>
 #include <vector>
 
-typedef std::vector<vec2 > Matrix;
+typedef std::vector<vec2 > Matrix;     	//vec2 tárolása
+typedef std::vector<vec4 > Matrix4;	//vec4 tárolása
+typedef std::vector<double > Vector;	//double-k tárolása
 
 struct Circle {
   
@@ -241,7 +243,27 @@ GLint getActivePoint ( vec2 p, GLint size, GLint sens, GLint x, GLint y )
     GLint i, s= sens * sens;
     vec2 P = { ( float ) x, ( float ) y };
     for ( i = 0; i < size; i++ )
-        if ( dist ( p, P ) < s ) {
+        if ( dist2 ( p, P ) < s ) {
+            return i;
+        }
+    return -1;
+}
+
+/*
+ * Eldönti hogy egy adott pontra kattintottunk-e.
+ * p: ellenőrésre váró pont
+ * size: optional: itt mindig egy legyen
+ * sens: A pont és az egér kattintás közötti érzékenységre vonatkozik
+ * x: Egér x koordináta
+ * y: Egér y koordináta
+ * return: -1 ha nem az ellenőrzött pontra kattintott, 1 ha igen
+ */
+GLint getActivePoint ( Matrix p, GLint size, GLint sens, GLint x, GLint y )
+{
+    GLint i, s= sens * sens;
+    vec2 P = { ( float ) x, ( float ) y };
+    for ( i = 0; i < size; i++ )
+        if ( dist2 ( p[i], P ) < s ) {
             return i;
         }
     return -1;
@@ -363,6 +385,7 @@ void drawPointedBackground ( vec2 windowSize, int distance = 1, Color pointsColo
     if ( pointsColor != none ) {
         setColor ( pointsColor );
     }
+    
     for ( int i = 0; i < windowSize.x; i += distance ) {
         for ( int j = 0; j < windowSize.y; j += distance ) {
             drawPoint ( vec2 ( i, j ) );

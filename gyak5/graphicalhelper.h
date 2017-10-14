@@ -263,7 +263,7 @@ GLint getActivePoint ( Matrix p, GLint size, GLint sens, GLint x, GLint y )
     GLint i, s= sens * sens;
     vec2 P = { ( float ) x, ( float ) y };
     for ( i = 0; i < size; i++ )
-        if ( dist ( p[i], P ) < s ) {
+        if ( dist2 ( p[i], P ) < s ) {
             return i;
         }
     return -1;
