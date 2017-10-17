@@ -20,8 +20,8 @@ Matrix initPoints() {
 Matrix points = initPoints();
 
 mat24 calculateG ( mat24 G, Matrix points ) {
-    G[0] = vec4 ( points[0].x, points[1].x, points[2].x, points[3].x);
-    G[1] = vec4 ( points[0].y, points[1].y, points[2].y, points[3].y);
+    G[0] = vec4 ( points[0].x, points[1].x, points[2].x - points[0].x, points[3].x - points[1].x);
+    G[1] = vec4 ( points[0].y, points[1].y, points[2].y - points[0].y, points[3].y - points[1].y);
     return G;
 }
 
