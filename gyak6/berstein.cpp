@@ -2,7 +2,6 @@
 
 //Globális elemek
 Matrix points;
-vec2 t = vec2 ( 0,1 );
 double T = 0.5;
 
 double winWidth = 600, winHeight = 600;
@@ -19,16 +18,21 @@ int fact ( long n ) {
     }
 }
 
-int binomial(int n, int i){
-  return fact(n) / (fact(i) * (fact(n - i)));
+int binomial ( int n, int i ) {
+    return fact ( n ) / ( fact ( i ) * ( fact ( n - i ) ) );
+}
+
+double beisteinPolinom ( int i, int n, double t ) {
+    double result = binomial ( n, i ) * pow ( t, i ) * pow ( ( 1 - t ), ( n - i ) );
+//     std::cout << "i: " << i << " n: " << n << " t: " << t << " result: " << result << std::endl;
+    return result;
 }
 
 Matrix initPoints() {
     Matrix points;
     points.push_back ( vec2 ( 100,100 ) );
     points.push_back ( vec2 ( 250,500 ) );
-    points.push_back ( vec2 ( 400,575 ) );
-    points.push_back ( vec2 ( 450,500 ) );
+    points.push_back ( vec2 ( 400,500 ) );
     points.push_back ( vec2 ( 500,100 ) );
     return points;
 }
@@ -52,12 +56,33 @@ void printPoints ( Matrix points ) {
     }
 }
 
+void linkPoints ( Matrix points ) {
+    for ( int i = 0; i< points.size() - 1; i++ ) {
+        vec2 point1 = points[i];
+        vec2 point2 = points[i + 1];
+        drawLine ( point1, point2, blue );
+    }
+}
+
 void display() {
 
     glClear ( GL_COLOR_BUFFER_BIT );
     setColor ( red );
     printPoints ( points );
-    std::cout << binomial(5,2) << std::endl;
+    linkPoints ( points );
+    int n =  points.size();		//Pontok száma
+    glBegin ( GL_LINE_STRIP );
+    for ( double t = 0; t < 1; t += 0.001 ) {
+        vec2 printPoint = vec2 ( 0,0 );
+        for ( double i = 0; i < n; i++ ) {	//n - 1 mivel itt a görbe fokszámát kell átadni a függvénynek
+            printPoint += beisteinPolinom ( i, n - 1, t ) * ( vec2 ) points[i];
+        }
+        setColor ( purple );
+//         printMathObject ( printPoint );
+        glVertex2f ( printPoint.x, printPoint.y );
+    }
+    glEnd();
+
     glutSwapBuffers();
 }
 
@@ -84,7 +109,7 @@ int main ( int argc, char** argv ) {
     glutInitDisplayMode ( GLUT_DOUBLE | GLUT_RGB );
     glutInitWindowSize ( winWidth, winHeight );
     glutInitWindowPosition ( 100, 100 );
-    glutCreateWindow ( "de casperis" );
+    glutCreateWindow ( "Berstein" );
     init();
     glutDisplayFunc ( display );
     glutMouseFunc ( processMouse );
