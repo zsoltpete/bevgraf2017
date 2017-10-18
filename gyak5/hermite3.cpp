@@ -20,8 +20,8 @@ Matrix initPoints() {
 Matrix points = initPoints();
 
 mat24 calculateG ( mat24 G, Matrix points ) {
-    G[0] = vec4 ( points[0].x, points[1].x, points[2].x, points[3].x - points[2].x );
-    G[1] = vec4 ( points[0].y, points[1].y, points[2].y, points[3].y - points[2].y );
+    G[0] = vec4 ( points[0].x, points[1].x, points[2].x, points[3].x - points[0].x );
+    G[1] = vec4 ( points[0].y, points[1].y, points[2].y, points[3].y - points[0].y );
     return G;
 }
 
@@ -51,7 +51,7 @@ void calculator ( vec2 t, vec3 tPoints, Matrix points ) {
     tmpMInvers.push_back ( vec4 ( pow ( tPoints.x, 3 ), pow ( tPoints.x, 2 ), tPoints.x, 1 ) );
     tmpMInvers.push_back ( vec4 ( pow ( tPoints.y, 3 ), pow ( tPoints.y, 2 ), tPoints.y, 1 ) );
     tmpMInvers.push_back ( vec4 ( pow ( tPoints.z, 3 ), pow ( tPoints.z, 2 ), tPoints.z, 1 ) );
-    tmpMInvers.push_back ( vec4 ( 3 * ( pow ( tPoints.y, 2 ) ), 2 * tPoints.y, 1, 0 ) );
+    tmpMInvers.push_back ( vec4 ( 3 * ( pow ( tPoints.x, 2 ) ), 2 * tPoints.x, 1, 0 ) );
     mat4 MInvers = convertMatrix4Tomat4 ( tmpMInvers );
     MInvers = transpose ( MInvers );
     //Más adatszerkezettel töltöm fel azt konvertálom át mat4-be
