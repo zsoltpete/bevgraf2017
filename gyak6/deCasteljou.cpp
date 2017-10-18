@@ -31,7 +31,7 @@ void init() {
     points = initPoints();
 }
 
-vec2 deCasparis ( Matrix P, double t ) {
+vec2 deCasteljou ( Matrix P, double t ) {
     Matrix Q;
     int n = P.size();
     for ( int i = 0; i< n; i++ ) {
@@ -49,7 +49,7 @@ vec2 deCasparis ( Matrix P, double t ) {
 
 }
 
-void linkDeCasparisPoints ( Matrix points, double T ) {
+void linkDeCasteljouPoints ( Matrix points, double T ) {
     int n = points.size();
     if ( n == 1 ) {
         for ( int i = 0; i < n; i++ ) {
@@ -67,8 +67,9 @@ void linkDeCasparisPoints ( Matrix points, double T ) {
             drawLine ( point1, point2, blue );
             newPoints.push_back ( vector );
             drawPoint ( point1, green );
+	    drawPoint ( point2, green );
         }
-        linkDeCasparisPoints ( newPoints, T );
+        linkDeCasteljouPoints ( newPoints, T );
     }
 }
 
@@ -82,7 +83,7 @@ void printPoints ( Matrix points ) {
 void drawDeCasparis() {
     glBegin ( GL_LINE_STRIP );
     for ( double i = t.x; i < t.y; i += 0.001 ) {
-        vec2 printPoint = deCasparis ( points, i );
+        vec2 printPoint = deCasteljou ( points, i );
         setColor ( purple );
         glVertex2f ( printPoint.x, printPoint.y );
     }
@@ -93,7 +94,7 @@ void display() {
 
     glClear ( GL_COLOR_BUFFER_BIT );
     setColor ( red );
-    linkDeCasparisPoints ( points, T );
+    linkDeCasteljouPoints ( points, T );
     drawDeCasparis();
     printPoints ( points );
     glutSwapBuffers();
